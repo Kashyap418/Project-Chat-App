@@ -15,7 +15,7 @@ export const signup = async (req, res) => {
             return res.status(400).json({ error: "Username already exists" })
         }
 
-        const salt = await bcrypt.genSalt(10);
+        const salt = await bcrypt.genSalt(10); //higher value means more secure but slower
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
@@ -33,7 +33,7 @@ export const signup = async (req, res) => {
             generateTokenAndSetCookie(newUser._id, res);
             await newUser.save();
 
-            res.status(200).json({
+            res.status(201).json({
                 _id: newUser._id,
                 fullName: newUser.fullName,
                 username: newUser.username,

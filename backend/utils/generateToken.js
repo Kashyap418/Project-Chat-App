@@ -2,6 +2,10 @@ import jwt from 'jsonwebtoken'
 
 const generateTokenAndSetCookie = (userId, res) => {
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+    //{ userId } is the payload, i.e., the actual data being embedded in the token.
+    // You’re putting the userId inside the token so you can later extract it to identify the user.
+    // process.env.JWT_SECRET is the secret string like a digital signature  used to sign and verify the token.
+    // It's stored in .env file to keep it safe and private.
         expiresIn: '15d'
     })
  

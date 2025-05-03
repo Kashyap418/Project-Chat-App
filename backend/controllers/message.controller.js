@@ -2,11 +2,12 @@ import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import { getReceiverSocketId, io } from "../socket/socket.js";
 
+//find conversation between sender and reicever and if no conv exists then create a new converstion and add participants and then create a new message put it into messages array of conversation
 export const sendMessage = async (req, res) => {
 	try {
 		const { message } = req.body;
 		const { id: receiverId } = req.params;
-		const senderId = req.user._id;
+		const senderId = req.user._id; //added in middleware
 
 		let conversation = await Conversation.findOne({
 			participants: { $all: [senderId, receiverId] },
@@ -45,17 +46,17 @@ export const sendMessage = async (req, res) => {
 	}
 };
 
-
+//find the conversation between sender and receiver and populate the messages array of it 
 export const getMessages = async (req, res) => {
 	try {
-		const { id: userToChatId } = req.params;
+		const { id: userToChatId } = req.params; //basicalyy recieverid
 		const senderId = req.user._id;
 
 		const conversation = await Conversation.findOne({
 			participants: { $all: [senderId, userToChatId] },
-		}).populate("messages"); // NOT REFERENCE BUT ACTUAL MESSAGES
+		}).populate("messages"); // NOT REFERENCE BUT ACTUAL MESSAGES 
 
-		if (!conversation) return res.status(200).json([]);
+		if (!conversation) return res.status(200).json([]); 
 
 		const messages = conversation.messages;
 

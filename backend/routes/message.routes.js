@@ -4,7 +4,7 @@ import protectRoute from "../middleware/protectRoute.js";
 
 const router=express.Router();
 
-router.get('/:id',protectRoute,getMessages);
-router.post("/send/:id",protectRoute,sendMessage);
+router.get('/:id',protectRoute,getMessages); //id is reciever id
+router.post("/send/:id",protectRoute,sendMessage); //id is reciever id
 
 export default router;

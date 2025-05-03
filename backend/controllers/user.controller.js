@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 
+//find every user in our database except the one currrently logged in,remove password and show them in sidebar
 export const getUsersForSidebar = async (req, res) => {
     try {
         const loggedInUserId = req.user._id;

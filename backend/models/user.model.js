@@ -25,11 +25,13 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			default: "",
 		},
-		// createdAt, updatedAt => Member since <createdAt>
+		
 	},
 	{ timestamps: true }
+	// createdAt, updatedAt => Member since <createdAt>
 );
      
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema); //"User" will become users, "Person" will become "people"
+
 
 export default User;

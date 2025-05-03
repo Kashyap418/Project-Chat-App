@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast'
 import { useAuthContext } from './context/AuthContext.jsx'
 
 function App() {
-  const {authUser} = useAuthContext();
+  const {authUser} = useAuthContext(); 
 
   return (
     <div className='p-4 h-screen flex items-center justify-center '>
