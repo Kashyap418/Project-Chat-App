@@ -26,7 +26,7 @@ app.use(express.json());
 
 app.use(cookieParser()); // Parses cookies attached to the client request.
 
-app.use('/api/auth',authRoutes); //authRoutes is  an Express router, defined in routes/auth.routes.js:
+app.use('/api/auth',authRoutes); //authRoutes is an Express router, defined in routes/auth.routes.js:
 app.use('/api/messages',messageRoutes);  
 app.use('/api/users',userRoutes);
 // Above 3 are Route Middlewares which also contain middleware in them 

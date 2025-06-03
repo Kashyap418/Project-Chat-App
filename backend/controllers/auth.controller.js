@@ -1,4 +1,4 @@
-import User from "../models/user.model.js"
+import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
 
@@ -54,10 +54,7 @@ export const login = async (req, res) => {
     try {
         const { username, password } = req.body;
         const user = await User.findOne({ username });
-        if (!user) console.log("danish bulla");
         const checkPassword = await bcrypt.compare(password, user?.password || '');
-        if (!checkPassword) console.log("jatin and danish");
-
 
         if (!user || !checkPassword) {
             return res.status(400).json({ error: "Invalid username or password!" });
@@ -78,7 +75,7 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
     try{
-        res.cookie("jwt","",{maxAge:0});
+        res.cookie("jwt","",{maxAge:0}); // remove token from our cookie
         res.status(200).json({message:"Logged Out Successfully"})
     }catch(error){
         console.log("Error in Logout controller", error.message);

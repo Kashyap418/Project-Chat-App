@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+ 
 const userSchema = new mongoose.Schema(
 	{
 		fullName: {
@@ -32,6 +32,5 @@ const userSchema = new mongoose.Schema(
 );
      
 const User = mongoose.model("User", userSchema); //"User" will become users, "Person" will become "people"
-
 
 export default User;

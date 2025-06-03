@@ -8,8 +8,8 @@ import { SocketContextProvider } from './context/SocketContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-    <AuthContextProvider>
+    <BrowserRouter> {/*to be able to use react-router-dom components we need to wrap our application with this component */}
+    <AuthContextProvider> {/*Now our App component and all its children can access the authentication context i.e. App is able to use these values-{authUser,setAuthUser} */}
    <SocketContextProvider>
    <App />
    </SocketContextProvider>

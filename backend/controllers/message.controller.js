@@ -2,7 +2,8 @@ import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import { getReceiverSocketId, io } from "../socket/socket.js";
 
-//find conversation between sender and reicever and if no conv exists then create a new converstion and add participants and then create a new message put it into messages array of conversation
+//find conversation between sender and reicever and if no conv exists then create a new converstion and
+//add participants and then create a new message put it into messages array of conversation
 export const sendMessage = async (req, res) => {
 	try {
 		const { message } = req.body;
