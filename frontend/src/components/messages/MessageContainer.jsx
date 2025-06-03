@@ -9,13 +9,11 @@ const MessageContainer = () => {
     const {selectedConversation,setSelectedConversation}=useConversation();
 
     useEffect(()=>{ // This effect runs when the component mounts
-        
         return ()=>setSelectedConversation(null); // Also runs the return () => { ... } part when the component unmounts (is removed from screen).
-
     },[setSelectedConversation]);
 
     return (
-        <div className='md:min-w-[450px] flex flex-col'>
+        <div className='w-full h-[100vh] sm:h-full sm:min-w-[450px] flex flex-col'>
             {!selectedConversation ? (<NoChatSelected /> ): (
                 <>
                     {/* Header */}
