@@ -1,43 +1,90 @@
-// const express=require('express');  
-import express from "express";
-import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import path from "path";
+// ========================================
+// MAIN SERVER FILE - Express.js Application
+// ========================================
+// This file sets up the main Express server, configures middleware,
+// defines API routes, and serves the frontend application
 
+// Import required dependencies
+import express from "express"; // Import Express.js framework  //💡 Purpose: Create an Express application
+import dotenv from "dotenv"; // Load environment variables from .env file
+import cookieParser from "cookie-parser"; // Parse cookies attached to client requests
+import path from "path"; // Get current directory path (needed for ES modules)
+
+// Import route handlers for different API endpoints
 import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import userRoutes from "./routes/user.routes.js";
 
+// Import database connection and socket.io setup
 import connectToMongoDB from "./db/connectToMongoDB.js";
 import { app, server } from "./socket/socket.js";
 
-const PORT=process.env.PORT || 5000
+// Define server port (use environment variable or default to 5000)
+const PORT = process.env.PORT || 5000;
 
+// Load environment variables from .env file
 dotenv.config();
 
+// Get current directory path (needed for ES modules)
 const __dirname = path.resolve();
 
+// ========================================
+// MIDDLEWARE CONFIGURATION
+// ========================================
+
+// Parse incoming JSON payloads and make them available in req.body
 app.use(express.json()); 
-// to parse the incoming request with JSON payloads (from req.body) 
-//"Hey Express, if any incoming request has JSON data in the body, please parse it and make it available in req.body
-//💥 Without express.json(): req.body will be undefined & Express won't know how to read the JSON body.
-//✅ With express.json(): Express will automatically parse the JSON string and convert it to a JavaScript object.
+// 💡 Purpose: Parse JSON data from request body
+// 💥 Without this: req.body will be undefined & Express won't know how to read JSON
+// ✅ With this: Express automatically parses JSON and converts to JavaScript object
 
+// Parse cookies attached to client requests
+app.use(cookieParser()); 
+// 💡 Purpose: Parse cookies from request headers
+// 💥 Without this: req.cookies will be undefined
+// ✅ With this: Express automatically parses cookies and converts to JavaScript object
 
-app.use(cookieParser()); // Parses cookies attached to the client request.
+// ========================================
+// API ROUTES CONFIGURATION
+// ========================================
 
-app.use('/api/auth',authRoutes); //authRoutes is an Express router, defined in routes/auth.routes.js:
-app.use('/api/messages',messageRoutes);  
-app.use('/api/users',userRoutes);
-// Above 3 are Route Middlewares which also contain middleware in them 
+// Mount authentication routes at /api/auth
+app.use('/api/auth', authRoutes); 
+// 💡 Handles: login, signup, logout, and authentication-related operations
 
-app.use(express.static(path.join(__dirname, '/frontend/dist' ))); // -> middleware-serves static frontend files (HTML, CSS, JS, etc.) from the dist folder.
+// Mount message routes at /api/messages
+app.use('/api/messages', messageRoutes);  
+// 💡 Handles: sending, receiving, and managing chat messages
 
-app.get('*',(req,res)=>{
-    res.sendFile(path.join(__dirname,"frontend","dist","index.html"));
+// Mount user routes at /api/users
+app.use('/api/users', userRoutes);
+// 💡 Handles: user profile, search, and user-related operations
+
+// ========================================
+// STATIC FILE SERVING & FRONTEND
+// ========================================
+
+// Serve static files (HTML, CSS, JS) from the frontend/dist folder
+app.use(express.static(path.join(__dirname, '/frontend/dist'))); 
+// 💡 Purpose: Serve the built React frontend application
+// 📁 Serves files from: frontend/dist directory
+
+// Catch-all route for client-side routing (SPA support)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
 });
+// 💡 Purpose: Handle React Router routes by serving index.html for all unmatched routes
+// 🔄 This enables client-side routing to work properly
 
-server.listen(PORT,()=>{
+// ========================================
+// SERVER STARTUP
+// ========================================
+
+// Start the server and connect to database
+server.listen(PORT, () => {
+    // Connect to MongoDB database
     connectToMongoDB();
-    console.log(`Server Running on Port: ${PORT}`);
-})
+    console.log(`🚀 Server Running on Port: ${PORT}`);
+});
+// 💡 Purpose: Initialize server and establish database connection
+// 🔗 Uses socket.io server instance for real-time communication

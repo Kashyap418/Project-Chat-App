@@ -1,20 +1,47 @@
-import { useContext,useState } from "react";
+// ========================================
+// AUTHENTICATION CONTEXT - User State Management
+// ========================================
+// This context provides authentication state throughout the React application
+// Allows sharing logged-in user data across all components without prop drilling
+
+import { useContext, useState } from "react";
 import { createContext } from "react";
 
-//Authentication context is a way to share the logged-in user’s data (like username, token, etc.) across all 
-//parts of a React application without passing props manually.
-
+// Create the authentication context
 export const AuthContext = createContext();
 
-export const useAuthContext=()=>{ 
+/**
+ * Custom hook to access authentication context
+ * Simplifies context consumption in components
+ * @returns {Object} Authentication context with authUser and setAuthUser
+ */
+export const useAuthContext = () => { 
     return useContext(AuthContext);
-}// This custom hook allows us to access the authentication context easily in any component.
-// It simplifies the process of consuming the context by providing a direct way to access the authUser and setAuthUser values.
+};
 
+/**
+ * Authentication Context Provider Component
+ * Manages user authentication state and provides it to all child components
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Child components to wrap
+ * @returns {JSX.Element} Context provider component
+ */
 export const AuthContextProvider = ({ children }) => {
-    const [authUser, setAuthUser] = useState(JSON.parse(localStorage.getItem("chat-user")) ||null);
-    return <AuthContext.Provider value={{authUser, setAuthUser}}>
-        {children}
-    </AuthContext.Provider>;
-} // This component provides the authentication context to the entire application.
-// It allows us to access the authenticated user and set the authenticated user from anywhere in the application.
+    // Initialize auth state from localStorage or null
+    // 💡 Persists user session across browser refreshes
+    const [authUser, setAuthUser] = useState(
+        JSON.parse(localStorage.getItem("chat-user")) || null
+    );
+    
+    return (
+        <AuthContext.Provider value={{ authUser, setAuthUser }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+// 💡 Context Benefits:
+// - Eliminates prop drilling for user data
+// - Centralized authentication state management
+// - Easy access to user info from any component
+// - Automatic re-renders when auth state changes

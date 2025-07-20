@@ -1,19 +1,36 @@
+// ========================================
+// APPLICATION ENTRY POINT - Main.jsx
+// ========================================
+// This is the entry point of the React application
+// Sets up the root component with necessary providers and context
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.jsx';
-import {BrowserRouter} from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext.jsx';
 import { SocketContextProvider } from './context/SocketContext.jsx';
 
+// Create and render the root component
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter> {/*to be able to use react-router-dom components we need to wrap our application with this component */}
-    <AuthContextProvider> {/*Now our App component and all its children can access the authentication context i.e. App is able to use these values-{authUser,setAuthUser} */}
-   <SocketContextProvider>
-   <App />
-   </SocketContextProvider>
-    </AuthContextProvider>
+    {/* BrowserRouter enables client-side routing */}
+    <BrowserRouter>
+      {/* 💡 Provides routing functionality for react-router-dom components */}
+      
+      {/* AuthContextProvider provides authentication state throughout the app */}
+      <AuthContextProvider>
+        {/* 💡 Makes authUser and setAuthUser available to all child components */}
+        
+        {/* SocketContextProvider provides real-time communication */}
+        <SocketContextProvider>
+          {/* 💡 Manages Socket.IO connection and real-time messaging */}
+          
+          {/* Main App component */}
+          <App />
+        </SocketContextProvider>
+      </AuthContextProvider>
     </BrowserRouter>
   </StrictMode>
-)
+);
