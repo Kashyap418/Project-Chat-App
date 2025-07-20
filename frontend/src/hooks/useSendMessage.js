@@ -5,7 +5,8 @@
 // Manages API calls, loading states, and message state updates
 
 import React, { useState } from 'react';
-import useConversation from '../zustand/useConversation';
+// import useConversation from '../zustand/useConversation';
+import { useAuthContext } from '../context/AuthContext';
 
 /**
  * Custom hook for sending messages
@@ -15,8 +16,8 @@ const useSendMessage = () => {
   // Loading state for UI feedback during message sending
   const [loading, setLoading] = useState(false);
   
-  // Get conversation state from Zustand store
-  const { messages, setMessages, selectedConversation } = useConversation();
+  // Get conversation state from AuthContext
+  const { messages, setMessages, selectedConversation } = useAuthContext();
 
   /**
    * Send message function that handles message API calls

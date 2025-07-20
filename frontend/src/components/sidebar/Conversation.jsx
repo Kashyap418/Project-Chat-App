@@ -1,10 +1,11 @@
 import { useSocketContext } from "../../context/SocketContext";
-import useConversation from "../../zustand/useConversation";
+// import useConversation from "../../zustand/useConversation";
+import { useAuthContext } from "../../context/AuthContext";
 
 const Conversation = ({ conversation, emoji, lastIdx }) => {
-	const { selectedConversation, setSelectedConversation } = useConversation();
-	const {onlineUsers} = useSocketContext();
-	const isOnline=onlineUsers.includes(conversation._id);
+    const { selectedConversation, setSelectedConversation } = useAuthContext();
+    const {onlineUsers} = useSocketContext();
+    const isOnline=onlineUsers.includes(conversation._id);
 
     const isSelected=selectedConversation?._id===conversation._id; 
 

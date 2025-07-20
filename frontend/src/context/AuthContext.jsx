@@ -32,9 +32,12 @@ export const AuthContextProvider = ({ children }) => {
     const [authUser, setAuthUser] = useState(
         JSON.parse(localStorage.getItem("chat-user")) || null
     );
+    // Conversation state
+    const [selectedConversation, setSelectedConversation] = useState(null);
+    const [messages, setMessages] = useState([]);
     
     return (
-        <AuthContext.Provider value={{ authUser, setAuthUser }}>
+        <AuthContext.Provider value={{ authUser, setAuthUser, selectedConversation, setSelectedConversation, messages, setMessages }}>
             {children}
         </AuthContext.Provider>
     );

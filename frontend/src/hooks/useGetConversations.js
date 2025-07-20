@@ -11,12 +11,12 @@ const useGetConversations = () => {
     const getConversations = async ()=>{
         setLoading(true);
         try {
-            const res = await fetch('/api/users');
+            const res = await fetch('/api/users'); //💡 Purpose: Fetch conversations from the server
             const data = await res.json();
             if(data.error){
                 throw new Error(data.error);
             }
-            setConversations(data);
+            setConversations(data); //💡 Purpose: Set the conversations state with the fetched data
         } catch (error) {
             toast.error(error.message);
         } finally {

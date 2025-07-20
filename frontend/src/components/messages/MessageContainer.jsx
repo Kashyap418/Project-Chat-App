@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import useConversation from "../../zustand/useConversation";
+// import useConversation from "../../zustand/useConversation";
 import MessageInput from "./MessageInput";
 import Messages from "./Messages";
 import {TiMessages} from "react-icons/ti";
 import { useAuthContext } from "../../context/AuthContext";
 
 const MessageContainer = () => {
-    const {selectedConversation,setSelectedConversation}=useConversation();
+    const {selectedConversation, setSelectedConversation} = useAuthContext();
 
     useEffect(()=>{ // This effect runs when the component mounts
         return ()=>setSelectedConversation(null); // Also runs the return () => { ... } part when the component unmounts (is removed from screen).
