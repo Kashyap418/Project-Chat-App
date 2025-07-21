@@ -6,8 +6,6 @@
  * - disconnect: User disconnects and updates online status
  * - sendMessage: Send real-time message to recipient
  * - newMessage: Receive new message and update UI
- * - typing: Show typing indicators
- * - stopTyping: Hide typing indicators
  * 
  * 🎯 Implementation Features:
  * - User socket mapping for targeted messaging
@@ -55,7 +53,7 @@ export const getOnlineUsers = () => {
 /**
  * 🔄 Socket Connection Handler
  */
-io.on("connection", (socket) => {
+io.on("connection", (socket) => { // socket is the user which is connected to the server
 	console.log("🟢 User connected:", socket.id);
 
 	// Extract user ID from handshake query
@@ -66,7 +64,7 @@ io.on("connection", (socket) => {
 		userSocketMap[userId] = socket.id;
 		console.log(`👤 User ${userId} mapped to socket ${socket.id}`);
 		
-		// Broadcast updated online users list
+		// Broadcast updated online users list to the user connected 
 		io.emit("getOnlineUsers", Object.keys(userSocketMap));
 	}
 
@@ -86,67 +84,6 @@ io.on("connection", (socket) => {
 			});
 			console.log(`📨 Message sent from ${userId} to ${receiverId}`);
 		}
-	});
-
-	/**
-	 * ⌨️ Typing Indicators
-	 * Shows when user is typing a message
-	 */
-	socket.on("typing", (data) => {
-		const { receiverId } = data;
-		const receiverSocketId = getReceiverSocketId(receiverId);
-		
-		if (receiverSocketId) {
-			io.to(receiverSocketId).emit("userTyping", {
-				userId: userId,
-				isTyping: true
-			});
-		}
-	});
-
-	/**
-	 * 🛑 Stop Typing Event
-	 * Hides typing indicator when user stops typing
-	 */
-	socket.on("stopTyping", (data) => {
-		const { receiverId } = data;
-		const receiverSocketId = getReceiverSocketId(receiverId);
-		
-		if (receiverSocketId) {
-			io.to(receiverSocketId).emit("userTyping", {
-				userId: userId,
-				isTyping: false
-			});
-		}
-	});
-
-	/**
-	 * 🔔 Join Conversation Room
-	 * For future room-based messaging implementation
-	 */
-	socket.on("joinConversation", (conversationId) => {
-		socket.join(conversationId);
-		console.log(`🏠 User ${userId} joined conversation ${conversationId}`);
-	});
-
-	/**
-	 * 🚪 Leave Conversation Room
-	 */
-	socket.on("leaveConversation", (conversationId) => {
-		socket.leave(conversationId);
-		console.log(`🚪 User ${userId} left conversation ${conversationId}`);
-	});
-
-	/**
-	 * 📱 User Status Updates
-	 * Handle user status changes (online, away, busy)
-	 */
-	socket.on("updateStatus", (status) => {
-		// Broadcast status update to all users
-		io.emit("userStatusUpdate", {
-			userId: userId,
-			status: status
-		});
 	});
 
 	/**

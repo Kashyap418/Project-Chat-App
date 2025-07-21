@@ -3,6 +3,7 @@
 // ========================================
 // This context provides authentication state throughout the React application
 // Allows sharing logged-in user data across all components without prop drilling
+// Manages selected conversation and messages across the application
 
 import { useContext, useState } from "react";
 import { createContext } from "react";
